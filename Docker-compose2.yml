@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  broker:
+    image: mybroker
+    container_name: kafka-broker
+    networks:
+         nett:
+
+
+  consumer:
+    image: myconsum
+    depends_on:
+      - broker
+    container_name: consumer
+    volumes:
+    - type: volume
+      source: data
+      target: /opt/Consumer/
+    environment:
+      SERVER: broker    
+    networks:
+        nett:
+    
+
+  producer:
+    image: myproduc
+    depends_on:
+      - broker
+    networks:
+            nett:
+    environment:
+      SERVER: broker
+
+volumes:
+  data:
+    name: udata
+
+networks:
+  nett:
+    name: nett
+    driver: bridge
